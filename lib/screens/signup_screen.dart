@@ -3,6 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:insta_clone/resources/auth_methods.dart';
+import 'package:insta_clone/screens/login_screen.dart';
+import '../responsive/mobile_screen_layout.dart';
+import '../responsive/responsive_screen_layout.dart';
+import '../responsive/web_screen_layout.dart';
 import '../utils/colors.dart';
 import '../widgets/text_field_input.dart';
 import '../utils/utils.dart';
@@ -20,6 +24,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final TextEditingController _bioController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   Uint8List? _image;
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -36,6 +41,45 @@ class _SignupScreenState extends State<SignupScreen> {
     setState(() {
       _image = im;
     });
+  }
+
+  void signupuser() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    String res = await AuthMethods().signUpUser(
+        email: _emailController.text,
+        password: _passwordController.text,
+        username: _usernameController.text,
+        bio: _bioController.text,
+        file: _image!);
+    print(res);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (res != 'Success') {
+      // ignore: use_build_context_synchronously
+      showSnackBar(res, context);
+    } else {
+      // ignore: use_build_context_synchronously
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) => const ResponsiveLayout(
+                    mobileScreenLayout: MobileScreenLayout(),
+                    webscreenLayout: WebScreenLayout(),
+                  )));
+    }
+  }
+
+  void navigateToLogin() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
+    );
   }
 
   @override
@@ -132,17 +176,7 @@ class _SignupScreenState extends State<SignupScreen> {
               ),
 
               InkWell(
-                onTap: () async {
-                  String res = await AuthMethods().signUpUser(
-                    email: _emailController.text,
-                    password: _passwordController.text,
-                    username: _usernameController.text,
-                    bio: _bioController.text,
-                    file: _image!
-                    
-                  );
-                  print(res);
-                },
+                onTap: signupuser,
                 child: Container(
                   width: double.infinity,
                   alignment: Alignment.center,
@@ -155,7 +189,13 @@ class _SignupScreenState extends State<SignupScreen> {
                     ),
                     color: blueColor,
                   ),
-                  child: const Text('Log In'),
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: primaryColor,
+                          ),
+                        )
+                      : const Text('Log In'),
                 ),
               ),
 
@@ -175,16 +215,16 @@ class _SignupScreenState extends State<SignupScreen> {
                     padding: const EdgeInsets.symmetric(
                       vertical: 8,
                     ),
-                    child: const Text("Don't have an account?"),
+                    child: const Text("Already have an account?"),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToLogin,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
                       child: const Text(
-                        "Sign Up",
+                        "Log In",
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
