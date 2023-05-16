@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:insta_clone/screens/profile_screen.dart';
 import 'package:insta_clone/utils/colors.dart';
@@ -16,6 +15,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final TextEditingController searchController = TextEditingController();
   bool isShowUsers = false;
 
+  @override
   void dispose() {
     super.dispose();
     searchController.dispose();
@@ -28,7 +28,7 @@ class _SearchScreenState extends State<SearchScreen> {
         backgroundColor: mobileBackgroundColor,
         title: TextFormField(
           controller: searchController,
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: 'Search for a user',
           ),
           onFieldSubmitted: (String _) {
@@ -46,8 +46,8 @@ class _SearchScreenState extends State<SearchScreen> {
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
-                    child: const CircularProgressIndicator(),
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
 
@@ -77,8 +77,8 @@ class _SearchScreenState extends State<SearchScreen> {
               future: FirebaseFirestore.instance.collection('posts').get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return Center(
-                    child: const CircularProgressIndicator(),
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 }
                 return StaggeredGridView.countBuilder(

@@ -23,11 +23,11 @@ class _CommentScreenState extends State<CommentScreen> {
   @override
   Widget build(BuildContext context) {
     final User user = Provider.of<UserProvider>(context).getUser;
-    final TextEditingController _commentController = TextEditingController();
+    final TextEditingController commentController = TextEditingController();
 
     void dispose() {
       super.dispose();
-      _commentController.dispose();
+      commentController.dispose();
     }
 
     return Scaffold(
@@ -48,7 +48,7 @@ class _CommentScreenState extends State<CommentScreen> {
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
@@ -65,7 +65,7 @@ class _CommentScreenState extends State<CommentScreen> {
         margin: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
         ),
-        padding: EdgeInsets.only(
+        padding: const EdgeInsets.only(
           left: 16,
           right: 8,
         ),
@@ -84,7 +84,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   right: 8,
                 ),
                 child: TextField(
-                  controller: _commentController,
+                  controller: commentController,
                   decoration: InputDecoration(
                     hintText: 'Comment as ${user.username}',
                     border: InputBorder.none,
@@ -96,21 +96,21 @@ class _CommentScreenState extends State<CommentScreen> {
               onTap: () async {
                 await FirestoreMethods().postComment(
                   widget.snap['postId'],
-                  _commentController.text,
+                  commentController.text,
                   user.uid,
                   user.username,
                   user.photoUrl,
                 );
                 setState(() {
-                  _commentController.text = '';
+                  commentController.text = '';
                 });
               },
               child: Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 8,
                   horizontal: 8,
                 ),
-                child: Text(
+                child: const Text(
                   'Post',
                   style: TextStyle(color: blueColor),
                 ),

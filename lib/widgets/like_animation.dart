@@ -25,6 +25,7 @@ class _LikeAnimationState extends State<LikeAnimation>
   late AnimationController controller;
   late Animation<double> scale;
 
+  @override
   void initState() {
     super.initState();
     controller = AnimationController(
@@ -58,6 +59,7 @@ class _LikeAnimationState extends State<LikeAnimation>
     }
   }
 
+  @override
   void dispose() {
     super.dispose();
     controller.dispose();

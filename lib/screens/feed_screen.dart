@@ -18,16 +18,16 @@ class FeedScreen extends StatelessWidget {
           height: 32,
         ),
         centerTitle: false,
-        actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.messenger_outline))
-        ],
+        // actions: [
+        //   IconButton(onPressed: () {}, icon: Icon(Icons.messenger_outline))
+        // ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection('posts').snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }

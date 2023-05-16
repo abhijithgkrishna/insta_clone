@@ -67,8 +67,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Center(
-            child: const CircularProgressIndicator(),
+        ? const Center(
+            child: CircularProgressIndicator(),
           )
         : Scaffold(
             appBar: AppBar(
@@ -169,15 +169,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(top: 15),
+                        padding: const EdgeInsets.only(top: 15),
                         child: Text(
                           userData['username'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
                       Container(
                         alignment: Alignment.centerLeft,
-                        padding: EdgeInsets.only(top: 1),
+                        padding: const EdgeInsets.only(top: 1),
                         child: Text(
                           userData['bio'],
                         ),
@@ -186,11 +186,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 const Divider(),
-                FutureBuilder(
-                    future: FirebaseFirestore.instance
+                StreamBuilder(
+                    stream: FirebaseFirestore.instance
                         .collection('posts')
                         .where('uid', isEqualTo: widget.uid)
-                        .get(),
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(
@@ -210,9 +210,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         itemBuilder: (context, index) {
                           DocumentSnapshot snap = snapshot.data!.docs[index];
                           return Container(
-                            child: Image(
-                              image: NetworkImage(snap['postUrl']),
-                              fit: BoxFit.cover,
+                            child: InkWell(
+                              onLongPress: () => showDialog(
+                                  context: context,
+                                  builder: (context) => Dialog(
+                                        child: ListView(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16),
+                                          shrinkWrap: true,
+                                          children: [
+                                            'Delete',
+                                          ]
+                                              .map((e) => InkWell(
+                                                    onTap: () async {
+                                                      FirestoreMethods()
+                                                          .deletePost(
+                                                              snap['postId']);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    child: Container(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 12,
+                                                          horizontal: 16),
+                                                      child: Text(e),
+                                                    ),
+                                                  ))
+                                              .toList(),
+                                        ),
+                                      )),
+                              child: Image(
+                                image: NetworkImage(snap['postUrl']),
+                                fit: BoxFit.cover,
+                              ),
                             ),
                           );
                         },
@@ -230,16 +261,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         Text(
           num.toString(),
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
           ),
         ),
         Container(
-          margin: EdgeInsets.only(top: 4),
+          margin: const EdgeInsets.only(top: 4),
           child: Text(
             label,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 15,
               fontWeight: FontWeight.w400,
             ),

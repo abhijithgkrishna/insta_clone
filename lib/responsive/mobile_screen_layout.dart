@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:insta_clone/utils/colors.dart';
 import 'package:insta_clone/utils/global_variables.dart';
 
-import '../screens/add_post_screen.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({super.key});
@@ -18,11 +15,13 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   late PageController pageController;
   int _page = 0;
 
+  @override
   void initState() {
     super.initState();
     pageController = PageController();
   }
 
+  @override
   void dispose() {
     super.dispose();
     pageController.dispose();
@@ -38,6 +37,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     });
   }
 
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(

@@ -1,4 +1,3 @@
-import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -65,11 +64,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: Text('Create a post'),
+            title: const Text('Create a post'),
             children: [
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Take a photo'),
+                padding: const EdgeInsets.all(20),
+                child: const Text('Take a photo'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.camera);
@@ -79,8 +78,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 },
               ),
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Choose from gallery'),
+                padding: const EdgeInsets.all(20),
+                child: const Text('Choose from gallery'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                   Uint8List file = await pickImage(ImageSource.gallery);
@@ -90,8 +89,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 },
               ),
               SimpleDialogOption(
-                padding: EdgeInsets.all(20),
-                child: Text('Cancel'),
+                padding: const EdgeInsets.all(20),
+                child: const Text('Cancel'),
                 onPressed: () async {
                   Navigator.of(context).pop();
                 },
@@ -107,6 +106,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     });
   }
 
+  @override
   void dispose() {
     super.dispose();
     _descriptionController.dispose();
@@ -119,7 +119,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
     return _file == null
         ? Center(
             child: IconButton(
-              icon: Icon(Icons.upload),
+              icon: const Icon(Icons.upload),
               onPressed: () => _selectImage(context),
             ),
           )
@@ -127,11 +127,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
               leading: IconButton(
-                icon: Icon(Icons.arrow_back),
+                icon: const Icon(Icons.arrow_back),
                 onPressed: clearImage,
               ),
               centerTitle: false,
-              title: Text('Post to'),
+              title: const Text('Post to'),
               actions: [
                 TextButton(
                     onPressed: () => postImage(
@@ -190,7 +190,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       ),
                     ),
                   ),
-                  Divider(),
+                  const Divider(),
                 ],
               )
             ]),
